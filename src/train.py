@@ -11,6 +11,11 @@ from sklearn.metrics import mean_absolute_error, mean_squared_error
 from sklearn.model_selection import train_test_split
 
 rnd_state = 123
+base_namespace = "model_training"
+
+##########################
+# part 1: model training #
+##########################
 
 # (neptune) create run
 run = neptune.init(
@@ -19,11 +24,11 @@ run = neptune.init(
     tags=["xgb-integration", "experimenting"],
 )
 
-# (neptune-xgboost integration) create neptune callback to track XGBoost training
+# (neptune-xgboost integration) create neptune_callback to track XGBoost training
 neptune_callback = NeptuneCallback(
     run=run,
-    base_namespace="model_training",
-    log_tree=[0, 1, 2]
+    base_namespace=base_namespace,
+    log_tree=[0, 1, 2],
 )
 
 # prepare data
@@ -89,24 +94,46 @@ xgb.train(
         xgb.callback.LearningRateScheduler(lambda epoch: 0.99 ** (epoch+1)),
     ],
 )
+
 run.sync(wait=True)
 
-run["model_training/pickled_model"].download("xgb.model")
+# (neptune) download model from the run to make predictions on test data
+run[f"{base_namespace}/pickled_model"].download("xgb.model")
 with open("xgb.model", "rb") as file:
     bst = pickle.load(file)
 
 test_preds = bst.predict(dtest)
 
 # (neptune) log test scores
-run["test_score/rmse"] = np.sqrt(mean_squared_error(y_true=y_test, y_pred=test_preds))
-run["test_score/mae"] = mean_absolute_error(y_true=y_test, y_pred=test_preds)
+run[f"{base_namespace}/test_score/rmse"] = np.sqrt(mean_squared_error(y_true=y_test, y_pred=test_preds))
+run[f"{base_namespace}/test_score/mae"] = mean_absolute_error(y_true=y_test, y_pred=test_preds)
+run.sync(wait=True)
 
-# (neptune) determine if it is new best model so far and tag it "best"
+###############################################################
+# part 2: check if it's new best model for given data version #
+###############################################################
 
-# (neptune) Fetch project
+# (neptune) fetch necessary metadata from the current run
+run_id = run["sys/id"].fetch()
+data_version = run["data/train/version"].fetch()
+test_rmse = run[f"{base_namespace}/test_score/rmse"].fetch()
+
+# (neptune) fetch project
 project = neptune.get_project(name="common/project-tabular-data")
 
-# (neptune) Find best run
-runs_table_df = project.fetch_runs_table().to_pandas()
-runs_table_df = runs_table_df.sort_values(by="model_training/valid/rmse", ascending=False)
-run_id = runs_table_df["sys/id"].values[0]
+# (neptune) find best run for given data version
+best_run_df = project.fetch_runs_table(tag="best").to_pandas()
+best_run_df = best_run_df[best_run_df["data/train/version"] == data_version]
+best_rmse = best_run_df[f"{base_namespace}/test_score/rmse"].to_numpy()
+
+# check if new model is new best
+if test_rmse < best_rmse:
+    run["sys/tags"].add("best")
+
+    best_run_id = best_run_df["sys/id"].values[0]
+    best_run = neptune.init(
+        project="common/project-tabular-data",
+        run=best_run_id
+    )
+    best_run["sys/tags"].remove("best")
+    best_run.stop()
