@@ -76,12 +76,12 @@ model_params = {
     "gamma": 0.001,
     "max_depth": 4,
     "colsample_bytree": 0.7,
-    "lambda": 1.5,
+    "subsample": 0.8,
     "objective": "reg:squarederror",
     "eval_metric": ["mae", "rmse"],
 }
 evals = [(dtrain, "train"), (dval, "valid")]
-num_round = 30
+num_round = 50
 
 # (neptune) pass neptune_callback to the train function and run training
 xgb.train(
@@ -89,10 +89,7 @@ xgb.train(
     dtrain=dtrain,
     num_boost_round=num_round,
     evals=evals,
-    callbacks=[
-        neptune_callback,
-        xgb.callback.LearningRateScheduler(lambda epoch: 0.99 ** (epoch+1)),
-    ],
+    callbacks=[neptune_callback],
 )
 
 run.sync(wait=True)
