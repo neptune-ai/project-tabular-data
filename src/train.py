@@ -74,7 +74,7 @@ run["data/raw_sample"].upload(neptune.types.File.as_html(data.head(20)))
 model_params = {
     "eta": 0.3,
     "gamma": 0.001,
-    "max_depth": 4,
+    "max_depth": 2,
     "colsample_bytree": 0.7,
     "subsample": 0.8,
     "objective": "reg:squarederror",
