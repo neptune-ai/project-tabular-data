@@ -69,7 +69,7 @@ dtest = xgb.DMatrix(X_test, label=y_test)
 model_params = {
     "eta": 0.27,
     "gamma": 0,
-    "max_depth": 6,
+    "max_depth": 8,
     "colsample_bytree": 0.7,
     "subsample": 0.8,
     "objective": "reg:squarederror",
@@ -79,7 +79,7 @@ evals = [(dtrain, "train"), (dtest, "valid")]
 num_round = 200
 
 # (neptune) download model from the run and start finetuning
-run[f"{base_namespace}/pickled_model"].download("xgb.model")
+run["model_training/pickled_model"].download("xgb.model")
 with open("xgb.model", "rb") as file:
     bst = pickle.load(file)
 

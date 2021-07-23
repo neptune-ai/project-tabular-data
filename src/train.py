@@ -20,8 +20,7 @@ base_namespace = "model_training"
 # (neptune) create run
 run = neptune.init(
     project="common/project-tabular-data",
-    name="training",
-    tags=["xgb-integration", "experimenting"],
+    tags=["training"],
 )
 
 # (neptune-xgboost integration) create neptune_callback to track XGBoost training
