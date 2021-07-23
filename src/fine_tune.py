@@ -9,7 +9,7 @@ from sklearn.impute import SimpleImputer
 from sklearn.metrics import mean_absolute_error, mean_squared_error
 from sklearn.model_selection import train_test_split
 
-rnd_state = 123
+rnd_state = 7937694
 data_version = "fd9a77647fe6737064c2ba609042188a"
 base_namespace = "model_finetuning"
 
@@ -101,6 +101,7 @@ run[f"{base_namespace}/test_score/mae"] = mean_absolute_error(y_true=y_test, y_p
 run["sys/tags"].add("finetuned")
 
 run.sync(wait=True)
+
 #########################################################################
 # part 2: check if it's new best finetuned model for given data version #
 #########################################################################
