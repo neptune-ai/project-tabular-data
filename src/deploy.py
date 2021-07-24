@@ -21,7 +21,7 @@ run = neptune.init(
 # (neptune) download model from the run
 run["model_training/pickled_model"].download("xgb.model")
 
-# here goes deploying logic :) #
+# here goes deploying logic
 
 # (neptune) log model version that is now in prod
 in_prod_run_df = project.fetch_runs_table(tag="in-prod").to_pandas()
