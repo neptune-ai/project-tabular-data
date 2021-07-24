@@ -1,6 +1,6 @@
 import neptune.new as neptune
 
-data_version = "fd9a77647fe6737064c2ba609042188a"
+data_version = "5b49383080a7edfe4ef72dc359112d3c"
 base_namespace = "production"
 
 # (neptune) fetch project
@@ -28,12 +28,11 @@ in_prod_run_df = project.fetch_runs_table(tag="in-prod").to_pandas()
 in_prod_run_df = in_prod_run_df[in_prod_run_df["data/train/version"] == data_version]
 in_prod_run_id = in_prod_run_df["sys/id"].values[0]
 
-# (neptune) resume in-prod run in the read-only mode
+# (neptune) resume in-prod run
 run_in_prod = neptune.init(
     project="common/project-tabular-data",
     run=in_prod_run_id,
     capture_hardware_metrics=False,
-    mode="read-only",
 )
 
 # increment model version

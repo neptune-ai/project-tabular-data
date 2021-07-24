@@ -10,7 +10,7 @@ from sklearn.metrics import mean_absolute_error, mean_squared_error
 from sklearn.model_selection import train_test_split
 
 rnd_state = 7937694
-data_version = "fd9a77647fe6737064c2ba609042188a"
+data_version = "5b49383080a7edfe4ef72dc359112d3c"
 base_namespace = "model_finetuning"
 
 ################################
@@ -68,8 +68,8 @@ dtest = xgb.DMatrix(X_test, label=y_test)
 # define parameters
 model_params = {
     "eta": 0.27,
-    "gamma": 0,
-    "max_depth": 8,
+    "gamma": 0.001,
+    "max_depth": 7,
     "colsample_bytree": 0.7,
     "subsample": 0.8,
     "objective": "reg:squarederror",

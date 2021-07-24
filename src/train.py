@@ -10,7 +10,7 @@ from sklearn.impute import SimpleImputer
 from sklearn.metrics import mean_absolute_error, mean_squared_error
 from sklearn.model_selection import train_test_split
 
-rnd_state = 123
+rnd_state = 987245
 base_namespace = "model_training"
 
 ##########################
@@ -72,10 +72,10 @@ run["data/raw_sample"].upload(neptune.types.File.as_html(data.head(20)))
 # define parameters
 model_params = {
     "eta": 0.3,
-    "gamma": 0.001,
+    "gamma": 0.0001,
     "max_depth": 2,
-    "colsample_bytree": 0.7,
-    "subsample": 0.8,
+    "colsample_bytree": 0.85,
+    "subsample": 0.9,
     "objective": "reg:squarederror",
     "eval_metric": ["mae", "rmse"],
 }
