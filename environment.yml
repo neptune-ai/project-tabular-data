@@ -1,7 +1,8 @@
 name: ptd-demo
 channels:
-  - conda-forge
   - defaults
+  - conda-forge
+  - pytorch
 dependencies:
   - _libgcc_mutex=0.1=conda_forge
   - _openmp_mutex=4.5=1_gnu
@@ -48,7 +49,7 @@ dependencies:
   - gettext=0.19.8.1=h0b5b191_1005
   - giflib=5.2.1=h36c2ea0_2
   - gitdb=4.0.7=pyhd8ed1ab_0
-  - gitpython=3.1.19=pyhd8ed1ab_0
+  - gitpython=3.1.24=pyhd8ed1ab_0
   - graphite2=1.3.13=h58526e2_1001
   - graphviz=2.48.0=h85b4f2f_0
   - gtk2=2.24.33=h539f30e_1
@@ -82,12 +83,12 @@ dependencies:
   - libcblas=3.9.0=9_openblas
   - libdeflate=1.7=h7f98852_5
   - libffi=3.3=h58526e2_2
-  - libgcc-ng=11.1.0=hc902ee8_0
+  - libgcc-ng=11.2.0=h1d223b6_11
   - libgd=2.3.2=h78a0170_0
-  - libgfortran-ng=11.1.0=h69a702a_0
-  - libgfortran5=11.1.0=h6c583b3_0
+  - libgfortran-ng=11.2.0=h69a702a_11
+  - libgfortran5=11.2.0=h5c6108e_11
   - libglib=2.68.3=h3e27bee_0
-  - libgomp=11.1.0=hc902ee8_0
+  - libgomp=11.2.0=h1d223b6_11
   - libiconv=1.16=h516909a_0
   - liblapack=3.9.0=9_openblas
   - libllvm10=10.0.1=he513fc3_3
@@ -95,7 +96,7 @@ dependencies:
   - libpng=1.6.37=h21135ba_2
   - librsvg=2.50.7=hc3c00ef_0
   - libsodium=1.0.18=h36c2ea0_1
-  - libstdcxx-ng=11.1.0=h56837e0_0
+  - libstdcxx-ng=11.2.0=he4da1e4_11
   - libtiff=4.3.0=hf544144_1
   - libtool=2.4.6=h58526e2_1007
   - libuuid=2.32.1=h7f98852_1000
