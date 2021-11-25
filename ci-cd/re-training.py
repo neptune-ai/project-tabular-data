@@ -58,7 +58,7 @@ else:
     )
 
     # prepare data
-    data = pd.read_csv('../data/train.csv')
+    data = pd.read_csv('ci-cd/train.csv')
     data.dropna(axis=0, subset=['SalePrice'], inplace=True)
     y = data.SalePrice
     X = data.drop(['SalePrice'], axis=1).select_dtypes(exclude=['object'])
